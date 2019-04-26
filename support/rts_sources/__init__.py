@@ -86,7 +86,7 @@ class Rule(object):
 
         if as_new_rule:
             # Update the list of used scenario variables
-            for sv in self._scenarios.keys():
+            for sv in list(self._scenarios.keys()):
                 if sv not in Rule.__used_scenarios:
                     Rule.__used_scenarios[sv] = 1
                 else:
@@ -98,10 +98,10 @@ class Rule(object):
 
     @property
     def used_scenarios(self):
-        return self._scenarios.keys()
+        return list(self._scenarios.keys())
 
     def has_scenario(self, var):
-        return var in self._scenarios.keys()
+        return var in list(self._scenarios.keys())
 
     @staticmethod
     def count_scenario(var):
@@ -181,7 +181,7 @@ class SourceTree(FilesHolder):
             else:
                 self.scenarios['RTS_Profile'] = ['zfp', 'ravenscar-sfp']
 
-        for key, values in rts_sources.iteritems():
+        for key, values in rts_sources.items():
             # filter out folders that are not used by the selected profiles
             if profile == 'zfp':
                 if 'gnarl' in key.split('/'):
@@ -226,9 +226,9 @@ class SourceTree(FilesHolder):
         # specific directory. This is needed in the shared sources case as
         # it is expected to have different version of the same source in
         # different sub-directories
-        for k, v in pairs.items():
+        for k, v in list(pairs.items()):
             if k not in self.dirs[dir]:
-                print "in update_pairs: no such source: %s" % k
+                print("in update_pairs: no such source: %s" % k)
             else:
                 self.dirs[dir][k] = v
         return True
@@ -241,7 +241,7 @@ class SourceTree(FilesHolder):
         :type directory: string
         :type rules: list or None
         """
-        if isinstance(rules, basestring):
+        if isinstance(rules, str):
             rules = [rules]
 
         if directory.split('/')[0] == 'gnarl':
@@ -271,8 +271,8 @@ class SourceTree(FilesHolder):
         if not os.path.exists(self.dest_sources):
             os.makedirs(self.dest_sources)
         dirs = []
-        dirs += self.rules['gnat'].keys()
-        dirs += self.rules['gnarl'].keys()
+        dirs += list(self.rules['gnat'].keys())
+        dirs += list(self.rules['gnarl'].keys())
         for d in dirs:
             installed = []
             self.__install_dir(d, installed)
@@ -325,7 +325,7 @@ class SourceTree(FilesHolder):
 
         # First dump all directories that match the environment
         matched = []
-        for d, rule in dirs.items():
+        for d, rule in list(dirs.items()):
             if rule.matches(env, exact=True):
                 matched.append(d)
 
@@ -354,7 +354,7 @@ class SourceTree(FilesHolder):
         # now prune all dirs that cannot match anymore, due to the current
         # environment
         pruned = {}
-        for d, rule in dirs.items():
+        for d, rule in list(dirs.items()):
             if not rule.partial_match(env):
                 pruned[d] = rule
         for d in matched:
@@ -364,7 +364,7 @@ class SourceTree(FilesHolder):
 
         if len(dirs) == 0:
             # restore the pruned items
-            for d, rule in pruned.items():
+            for d, rule in list(pruned.items()):
                 dirs[d] = rule
 
             return ret
@@ -374,7 +374,7 @@ class SourceTree(FilesHolder):
         for j in range(0, len(scenarios)):
             next_var = scenarios[j]
             used = False
-            for d, rule in dirs.items():
+            for d, rule in list(dirs.items()):
                 if rule.has_scenario(next_var):
                     used = True
             if not used:
@@ -407,20 +407,20 @@ class SourceTree(FilesHolder):
             del(env[next_var])
 
         # restore the pruned items
-        for d, rule in pruned.items():
+        for d, rule in list(pruned.items()):
             dirs[d] = rule
 
         return ret
 
     def __install_dir(self, dirname, installed_files):
         if dirname not in self.dirs:
-            print('undefined shared directory %s' % dirname)
+            print(('undefined shared directory %s' % dirname))
 
         destdir = os.path.join(self.dest_sources, dirname)
 
         if not os.path.exists(destdir):
             os.makedirs(destdir)
 
-        for k, v in self.dirs[dirname].items():
+        for k, v in list(self.dirs[dirname].items()):
             self._copy_pair(dst=k, srcfile=v, destdir=destdir,
                             installed_files=installed_files)

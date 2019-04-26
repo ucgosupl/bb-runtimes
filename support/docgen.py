@@ -1,7 +1,7 @@
 import shutil
 import os
 import os.path
-from files_holder import FilesHolder
+from .files_holder import FilesHolder
 
 from . import fullpath
 
@@ -73,7 +73,7 @@ def docgen(boards, target, dest):
                       " the following run-times:\n\n"))
         for board in sorted(runtimes.keys()):
             fp.write("* %s" % board)
-            if board in readmes.keys():
+            if board in list(readmes.keys()):
                 ref = files[readmes[board]]
                 fp.write(" (see :ref:`%s`)" % ref)
             fp.write("\n\n")

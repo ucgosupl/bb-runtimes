@@ -108,13 +108,13 @@ class ArchSupport(FilesHolder):
                 return
             else:
                 # simple target pair
-                key = script.keys()[0]
+                key = list(script.keys())[0]
                 base = os.path.basename(key)
                 assert base == key, \
                     "invalid parameter: %s is not a basename" % key
                 script = script[key]
         else:
-            if isinstance(script, basestring):
+            if isinstance(script, str):
                 # simple filename
                 base = os.path.basename(script)
             else:
@@ -176,7 +176,7 @@ class ArchSupport(FilesHolder):
 
     def _install(self, dirname, destination, installed_files):
         if dirname not in self.dirs:
-            print('undefined bsp directory %s' % dirname)
+            print(('undefined bsp directory %s' % dirname))
 
         rel = self.rel_path + 'src/' + dirname
 
@@ -185,7 +185,7 @@ class ArchSupport(FilesHolder):
         if not os.path.exists(destdir):
             os.makedirs(destdir)
 
-        for k, v in self.dirs[dirname].items():
+        for k, v in list(self.dirs[dirname].items()):
             self._copy_pair(dst=k, srcfile=v, destdir=destdir,
                             installed_files=installed_files)
 

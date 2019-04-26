@@ -47,9 +47,8 @@ class PikeOS(Target):
         if self.pikeos_version == 'pikeos3':
             # Don't use function/data sections, not supported by linker script
             conf.build_flags['common_flags'] = \
-                filter(lambda x: x not in ['-ffunction-sections',
-                                           '-fdata-sections'],
-                       self.build_flags['common_flags'])
+                [x for x in self.build_flags['common_flags'] if x not in ['-ffunction-sections',
+                                           '-fdata-sections']]
 
 
 class ArmPikeOS(PikeOS):

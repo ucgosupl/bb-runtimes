@@ -1,4 +1,4 @@
-from target import Target
+from .target import Target
 from support import readfile, datapath
 from support.files_holder import FilesHolder
 
@@ -152,7 +152,7 @@ class Installer(object):
                 gnarl_langs.append('Asm_Cpp')
 
         # Now install the rts-specific sources
-        for rts_name, rts_obj in self.tgt.runtimes.items():
+        for rts_name, rts_obj in list(self.tgt.runtimes.items()):
             base_rts = os.path.join(base_bsp, rts_name)
             rts_gnat = [d for d in gnat_dirs]
             rts_gnarl = [d for d in gnarl_dirs]
@@ -185,7 +185,7 @@ class Installer(object):
                 if not os.path.exists(path):
                     os.mkdir(path)
 
-            for dirname, l in rts_obj.dirs.items():
+            for dirname, l in list(rts_obj.dirs.items()):
                 if l is None or len(l) == 0:
                     continue
 
@@ -219,7 +219,7 @@ class Installer(object):
                 if not os.path.exists(full):
                     os.makedirs(full)
 
-                for srcname, pair in l.items():
+                for srcname, pair in list(l.items()):
                     self.tgt._copy_pair(srcname, pair, full)
 
             # user-defined sources
@@ -238,7 +238,7 @@ class Installer(object):
                 fp.write('adalib\n')
 
             # Write config files
-            for name, content in self.tgt.config_files.iteritems():
+            for name, content in self.tgt.config_files.items():
                 with open(os.path.join(base_rts, name), 'w') as fp:
                     fp.write(content)
             with open(os.path.join(base_rts, 'runtime.xml'), 'w') as fp:
@@ -254,7 +254,7 @@ class Installer(object):
             inst_files.append(os.path.join(support_dir, 'ada_source_path'))
             inst_files.append(os.path.join(support_dir, 'ada_object_path'))
 
-            for name, content in rts_obj.config_files.iteritems():
+            for name, content in rts_obj.config_files.items():
                 inst_files.append(name)
                 with open(os.path.join(base_rts, name), 'w') as fp:
                     fp.write(content)

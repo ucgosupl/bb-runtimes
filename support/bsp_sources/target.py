@@ -268,14 +268,14 @@ class Target(TargetConfiguration, ArchSupport):
                 for val in self.ld_scripts:
                     if val['loader'] is None:
                         continue
-                    if isinstance(val['loader'], basestring):
+                    if isinstance(val['loader'], str):
                         if val['loader'] == l:
                             switches.append('"-T", "%s"' % val['name'])
                     else:
                         if l in val['loader']:
                             switches.append('"-T", "%s"' % val['name'])
                 for sw in self.ld_switches:
-                    if isinstance(sw['loader'], basestring) \
+                    if isinstance(sw['loader'], str) \
                             and sw['loader'] == l:
                         switches.append('"%s"' % sw['switch'])
                     if isinstance(sw['loader'], list) \

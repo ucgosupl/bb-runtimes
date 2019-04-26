@@ -30,11 +30,11 @@ for opt, arg in options:
         if arg in allspeeds:
             speed=allspeeds[arg]
         else:
-            print 'Unknown speed: ', arg
+            print('Unknown speed: ', arg)
             sys.exit(1)
 
 if not len(argv) in (1,2):
-    print 'Usage: ' + sys.argv[0] + ' [-s speed] device file'
+    print('Usage: ' + sys.argv[0] + ' [-s speed] device file')
     sys.exit(1)
 
 dev=argv[0]
@@ -64,43 +64,43 @@ def flushserial():
         sys.stdout.write(c)
     sys.stdout.flush()
 
-print 'Syncing...'
+print('Syncing...')
 os.write(fd, '\n')
 res = readwait(7)
 if res != '\r\nMON> ':
-    print 'cannot get prompt, got "', res, '"'
+    print('cannot get prompt, got "', res, '"')
     sys.exit(1)
 os.write(fd,'load\n')
 res = readwait(6)
 if res != 'load\r\n':
-    print 'cannot get echo, got "', res, '"'
+    print('cannot get echo, got "', res, '"')
     sys.exit(1)
 res = readwait(19)
 if res != 'Waiting for srec.\r\n':
-    print 'cannot get wait message, got "', res, '"'
+    print('cannot get wait message, got "', res, '"')
     sys.exit(1)
 
-print 'Sending srec...'
+print('Sending srec...')
 
 for l in open(argv[1]):
     if verbose:
-        print l.rstrip(),
+        print(l.rstrip(), end=' ')
     os.write(fd,l)
     i,o,e=select.select([fd],[],[],1.0)
     if len(i) == 0:
-        print ' Timeout!'
+        print(' Timeout!')
         break
     c = os.read(fd,1)
     if c == '+':
         sys.stdout.write('+')
         sys.stdout.flush()
         if verbose:
-            print
+            print()
     elif c == '.':
-        print '.'
+        print('.')
         break
     else:
-        print ' Error!'
+        print(' Error!')
         # Flush input
         sys.stdout.write (c)
         flushserial()
@@ -108,7 +108,7 @@ for l in open(argv[1]):
 
 res = readwait(5)
 if res != 'MON> ':
-    print 'cannot get prompt, got "', res, '"'
+    print('cannot get prompt, got "', res, '"')
     sys.exit(1)
 
 def echo():
@@ -124,10 +124,10 @@ if flag_run:
     os.write(fd,'go\n')
     res = readwait(4)
     if res != 'go\r\n':
-        print 'cannot get echo, got "', res, '"'
+        print('cannot get echo, got "', res, '"')
         sys.exit(1)
-    print '# Echoing...'
+    print('# Echoing...')
     echo()
     flushserial()
 else:
-    print 'Done'
+    print('Done')

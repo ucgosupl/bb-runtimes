@@ -14,12 +14,12 @@ try:
     with open(gnatvsn_spec, 'rb') as fd:
         gnatvsn_content = fd.read()
 except Exception:
-    print 'cannot find gnatvsn.ads'
+    print('cannot find gnatvsn.ads')
     sys.exit(1)
 
 
 def get_copyright():
-    return u'2008-%s, AdaCore' % time.strftime('%Y')
+    return '2008-%s, AdaCore' % time.strftime('%Y')
 
 
 def get_gnat_version():
@@ -29,7 +29,7 @@ def get_gnat_version():
     if m:
         return m.group(1).strip()
 
-    print 'cannot find GNAT version in gnatvsn.ads'
+    print('cannot find GNAT version in gnatvsn.ads')
     sys.exit(1)
 
 
@@ -41,7 +41,7 @@ def get_gnat_build_type():
                 'FSF': 'FSF',
                 'GPL': 'GPL'}[m.group(1).strip()]
     else:
-        print 'cannot compute GNAT build type'
+        print('cannot compute GNAT build type')
         sys.exit(1)
 
 
@@ -57,7 +57,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project
-project = u'GNAT %s for @target@ run-times' % get_gnat_build_type()
+project = 'GNAT %s for @target@ run-times' % get_gnat_build_type()
 
 copyright = get_copyright()
 
@@ -78,7 +78,7 @@ if os.path.isfile('gnat.sty'):
     latex_additional_files = ['gnat.sty']
 
 latex_documents = [
-    (master_doc, 'gnat_runtimes.tex', project, u'AdaCore', 'howto')]
+    (master_doc, 'gnat_runtimes.tex', project, 'AdaCore', 'howto')]
 
 try:
     import latex_elements
@@ -88,8 +88,8 @@ try:
         'edition': 'GNAT %s Edition' % (
             'Pro' if get_gnat_build_type() == 'PRO'
             else 'GPL'),
-        'name': u'GNU Ada',
-        'tool': u'GNAT',
+        'name': 'GNU Ada',
+        'tool': 'GNAT',
         'version': version,
         'build_type': get_gnat_build_type()}
 
