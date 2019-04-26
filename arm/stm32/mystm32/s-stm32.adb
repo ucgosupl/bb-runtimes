@@ -50,7 +50,7 @@ package body System.STM32 is
    function System_Clocks return RCC_System_Clocks
    is
       Source       : constant SYSCLK_Source :=
-                      SYSCLK_Source'Val (RCC_Periph.CFGR.SWS);
+                      SYSCLK_Source'Val (RCC_Periph.CFGR.SWS.Val);
       Result       : RCC_System_Clocks;
 
    begin
@@ -70,9 +70,12 @@ package body System.STM32 is
 
          when SYSCLK_SRC_PLL =>
             declare
-               Pllm   : constant UInt32 := UInt32 (RCC_Periph.PLLCFGR.PLLM);
-               Plln   : constant UInt32 := UInt32 (RCC_Periph.PLLCFGR.PLLN);
-               Pllp   : constant UInt32 := UInt32 (RCC_Periph.PLLCFGR.PLLP);
+               Pllm   : constant UInt32 :=
+                   UInt32 (RCC_Periph.PLLCFGR.PLLM.Val);
+               Plln   : constant UInt32 :=
+                   UInt32 (RCC_Periph.PLLCFGR.PLLN.Val);
+               Pllp   : constant UInt32 :=
+                   UInt32 (RCC_Periph.PLLCFGR.PLLP.Val);
                Pllvco : UInt32;
 
             begin
