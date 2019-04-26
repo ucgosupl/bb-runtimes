@@ -70,6 +70,8 @@ def build_configs(target):
         t = SmartFusion2()
     elif target.startswith('stm32'):
         t = Stm32(target)
+    elif target.startswith('mystm32'):
+        t = Stm32(target)
     elif target == 'openmv2':
         t = Stm32(target)
     elif target == 'tms570':

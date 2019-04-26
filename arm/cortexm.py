@@ -496,6 +496,8 @@ class Stm32(ArmV7MTarget):
     def cortex(self):
         if self.mcu.startswith('stm32f4'):
             return 'cortex-m4'
+        elif self.mcu.startswith('mystm32'):
+            return 'cortex-m4'
         elif self.mcu.startswith('stm32f7'):
             return 'cortex-m7'
         else:
@@ -534,6 +536,8 @@ class Stm32(ArmV7MTarget):
             self.mcu = 'stm32f7x'
         elif self.board == 'stm32f769disco':
             self.mcu = 'stm32f7x9'
+        elif self.board == 'mystm32':
+            self.mcu = 'mystm32'
         else:
             assert False, "Unknown stm32 board: %s" % self.board
 
@@ -580,6 +584,9 @@ class Stm32(ArmV7MTarget):
         elif self.board == 'stm32f769disco':
             self.add_sources('crt0', [
                 'arm/stm32/stm32f7x/s-stm32.adb'])
+        elif self.board == 'mystm32':
+            self.add_sources('crt0', [
+                'arm/stm32/mystm32/s-stm32.adb'])
 
         # ravenscar support
         self.add_sources('gnarl', [
